@@ -3,8 +3,8 @@
 
     <!-- HEAD -->
     <tr>
-      <th colspan="4">fact</th>
-      <th colspan="4">forecast</th>
+      <th :colspan="dates.length*2">fact</th>
+      <th :colspan="dates.length*2">forecast</th>
     </tr>
     <tr>
       <th :colspan="dates.length">Qliq</th>
