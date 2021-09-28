@@ -2,6 +2,10 @@
   <div class="details">
     <loader v-if="loading" />
     <div class="details__info" v-else>
+      <p class="details__title">{{ companyInfo.name }}</p>
+
+      <companytable :data="details" />
+
       <p class="details__title">qliq</p>
       <apexchart
         class="details__graph"
@@ -10,6 +14,7 @@
         :series="series_qliq"
         type="line"
       />
+
       <p class="details__title">qoil</p>
       <apexchart
         class="details__graph"
@@ -25,16 +30,23 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import Loader from "../../components/loader";
+import Companytable from "../../components/companytable";
 
 export default {
-  components: {Loader},
+  components: {Companytable, Loader},
   computed: {
     ...mapGetters({
+      list: "getCompanies",
       details: "getDetails",
       loading: "getDetailsLoading",
     }),
     id() {
       return this.$route.params.id;
+    },
+    companyInfo() {
+      return this.list
+          .find(c => +c.id === +this.id)
+          || {name:"No name"};
     },
     options_qliq() {
       return {
@@ -86,7 +98,7 @@ export default {
       fetchDetails: "fetchDetails"
     })
   },
-  mounted() {
+  created() {
     this.fetchDetails(this.id);
   }
 }
@@ -94,8 +106,11 @@ export default {
 
 <style lang="scss" scoped>
 .details {
+  overflow: auto;
   &__title {
-    margin-top: 20px;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: 600;
   }
 }
 </style>
